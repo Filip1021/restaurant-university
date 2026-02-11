@@ -57,4 +57,4 @@ App settings (env vars supported):
 ```bash
 dotnet test
 ```
-Covers reservation happy-path and insufficient-spots cases.
+
