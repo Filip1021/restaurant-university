@@ -1,0 +1,39 @@
+# .NET build artifacts
+bin/
+obj/
+[Bb]uild/
+**/bin/
+**/obj/
+
+# Visual Studio/JetBrains
+.vs/
+.idea/
+*.user
+*.userprefs
+*.suo
+*.sln.docstates
+
+# Logs and OS
+*.log
+*.DS_Store
+
+# NuGet
+*.nupkg
+packages/
+.nuget/
+
+# Rider/VS Code
+.vscode/
+
+# Resharper
+*_Resharper.*
+_ReSharper*/
+
+# Coverage
+coverage/
+*.coverage
+*.coveragexml
+
+# Others
+project.lock.json
+artifacts/

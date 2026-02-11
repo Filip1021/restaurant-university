@@ -1,0 +1,57 @@
+services:
+  mongodb:
+    image: mongo:7
+    container_name: restaurant-reservation-mongo
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mongosh",
+          "--username",
+          "admin",
+          "--password",
+          "password",
+          "--authenticationDatabase",
+          "admin",
+          "--eval",
+          "db.adminCommand('ping')"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    networks:
+      - restaurant-reservation-network
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: restaurant-reservation-api
+    ports:
+      - "5127:5127"
+    environment:
+      Mongo__ConnectionString: "mongodb://admin:password@mongodb:27017/?authSource=admin"
+      Mongo__DatabaseName: "restaurant_table_reservations_db"
+      Reservation__MaxSeatsPerUser: "5"
+      Reservation__ReservationFeePercent: "0.00"
+      Reservation__AllowReservationAfterStart: "false"
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    networks:
+      - restaurant-reservation-network
+
+volumes:
+  mongo_data:
+
+networks:
+  restaurant-reservation-network:
+    driver: bridge
